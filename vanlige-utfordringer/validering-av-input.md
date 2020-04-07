@@ -1,4 +1,13 @@
 <style>
+    label{
+        display:block;
+    }
+
+    .label{
+        display:inline-block;
+        min-width:100px;
+    }
+
     input:invalid {
         outline: 1px solid red;
     }
@@ -38,19 +47,19 @@ før de får se om noe er feil. Validering i frontend gir brukeren tilbakemeldin
 brukeropplevelse hvis det blir gjort på en god måte. Det er også mulig å kombinere ved å sende inn dataene brukeren
 skriver inn underveis for å returnere eventuelle feil.
 
-Videre i denne artikkelen tar vi utgangspunkt i at den beste fremgangsmåten er å gjøre validering av input i frontend også, og ser derfor på hvordan dette gjøres på en god måte, både teknisk og for brukeropplevelsen.
+Videre i denne artikkelen tar vi utgangspunkt i at den beste fremgangsmåten er å gjøre validering av input i frontend også, og ser derfor på hvordan dette gjøres på en god måte, både teknisk og for brukeropplevelsen. Til slutt runder vi av med et løsningsforslag.
 
 ## Hvordan validere
 
-[HTML5 inneholder nå mange funksjoner for å validere input](https://developer.mozilla.org/en-US/docs/Learn/Forms/ Form_validation#Using_built-in_form_validation). Det har blitt så bra at en i stor grad kan løse validering med disse. Hvis en kombinerer denne valideringen med [input typer](https://developer.mozilla.org/en-US/docs/Learn/Forms/HTML5_input_types) kan en skape en god brukeropplevse med minimal bruk av JavaScript.
+[HTML5 inneholder nå mange funksjoner for å validere input](https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation#Using_built-in_form_validation). Det har blitt så bra at en i stor grad kan løse validering med disse. Hvis en kombinerer denne valideringen med [input typer](https://developer.mozilla.org/en-US/docs/Learn/Forms/HTML5_input_types) kan en skape en god brukeropplevse med minimal bruk av JavaScript.
 
-De innebygde egenskapene(atributt) som brukes for validering er:
+De innebygde egenskapene(attributt) som brukes for validering er:
 
 - `required`
+- `type`
 - `minlength` og `maxlength` - lengde av strenger
 - `min` og `max` - verdier av nummer
-- `type` - button, checkbox, color, date, datetime-local, email, file, hidden, image, month, number, password,
-  radio, range, reset, search, submit, tel, text, time, url, week.
+- `pattern`
 
 Ved å sette type og valideringsregler vil inputfeltet selv ofte kunne si ifra om det er gyldig eller ikke. Dette gjøres ved at pseudo-class (tenk `:hover`) `invalid` blir satt både på `form` og `input` elementet det gjelder.
 
@@ -62,7 +71,7 @@ input:invalid {
 }
 ```
 
-### `required`
+### Egenskapen `required`
 
 Den første egenskapen vi skal se på et `required`. `required` støttes av de fleste input typene, med untak av `color` og `range` som har default verdier. Elementer med egenskapen `required` får også pseudo-class `:required`, og feltene som ikke har den satt får tilsvarende pseudo-class `optional`. `reuired` gjør det en forventer. Den gjør at et felt som mangler verdi blir satt til ugyldig.
 
@@ -78,7 +87,96 @@ Den første egenskapen vi skal se på et `required`. `required` støttes av de f
 
 [Les mer om `required` i MDN we docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/required)
 
-### `minLength` og `maxLength`
+### Egenskapen `type`
+
+Egenskapen `type` påvirker hvordan et input felt fungerer. Default input type er `text`. Noen av verdiene vil vise egne komponenter / utvidede inputfelter som begrenser brukerens muligheter til verdier de kan skrive inn.
+
+Mulige verdier for egenskapen `type` er:
+
+- `button` - viser en knapp. Foreslår å heller bruke tagen `button`.
+- `checkbox`
+- `color` - lar brukeren velge farge via en fargevelger eller ved å skrive inn fargen på formatet `#rrggbb`.
+- `date` - lar en bruker skrive inn en dato på formatet `yyyy-mm-dd`
+- `datetime-local` - lar en bruker skrive inn en dato på formatet `yyyy-mm-ddThh:mm`
+- `email` - NB! godkjenner epostaddresser uten TLD (feks. dag.frode@example)
+- `file` - kan definere lovlige formater ved `accept="image/png, image/jpeg"`.
+- `hidden`
+- `image` - tilsvarer `submit`, men en kan velge et bilde som skal vises.
+- `month` - lar en bruker skrive inn en månede på formatet `yyyy-mm`
+- `number`
+- `password`
+- `radio`
+- `range`
+- `reset` - resetter alle verdier i formet. Ikke anbefalt å bruke da det muligjør brukerfeil.
+- `search` - inputfelt med mulighet for å tømme feltet
+- `submit` - lagre knapp i formet
+- `tel` - type for å skrive inn telefonnummere. Valideres ikke men hjelper brukeren på mobil
+- `text`
+- `time` - lar en bruker skrive inn en månede på formatet `hh:mm`
+- `url`
+- `week` - lar en bruker skrive inn en månede på formatet `yyyy-W##`
+
+#### De uten validering
+
+Typene `text`, `search`, `hidden`, `password`, `tel` kommer uten noen form for validering. En skulle kanskje tro `password` var begrenset til `[a-zA-Z0-9_\-.]`, men det altså faktisk ikke det! `tel` blir ofte gruppert med `url` og `email`, men telefonnummere har forskjellige formater og kan derfor ikke løses på noen god måte i et slikt felt.
+
+<label>
+<span class="label">Text: </span>
+<input type="text">
+</label>
+
+<label>
+<span class="label">Tel: </span>
+<input type="tel">
+</label>
+
+<label>
+<span class="label">Search: </span>
+<input type="search">
+</label>
+
+<label>
+<span class="label">Password: </span>
+<input type="password">
+</label>
+
+####
+
+<input type="url">
+<input type="email">
+
+<input type="time">
+<input type="week">
+<input type="date">
+<input type="datetime-local">
+<input type="month">
+
+<input type="number">
+
+<input type="image">
+<input type="button">
+<input type="submit">
+<input type="reset">
+
+<input type="color">
+<input type="range">
+<input type="file">
+
+<input type="radio">
+<input type="checkbox">
+
+<input type="url">
+<input type="email">
+
+<input type="time">
+<input type="week">
+<input type="date">
+<input type="datetime-local">
+<input type="month">
+
+[Les mer om `type` i MDN we docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#%3Cinput%3E_types)
+
+### Egenskapene `minLength` og `maxLength`
 
 Egenskapene `minLength` og `maxLength` sier hvor mange tegn et bruker skal få skrive inn i et `input` eller `textarea`. `maxLength` forhinder brukeren fra å skrive inn mer enn max antall tegn, mens `minLength` vil gjøre feltet ugyldig fra det første tegnet er skrevet inn, til `minLength` er nådd.
 
@@ -96,7 +194,7 @@ Egenskapene `minLength` og `maxLength` sier hvor mange tegn et bruker skal få s
 
 [Les mer om `maxLength` i MDN we docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/maxLength)
 
-### `min` og `max`
+### Egenskapene `min` og `max`
 
 Egenskapene `min` og `max` sier noe om den minste og største godkjente verdien til et `input`. Nettleseren vil prøve å forhindre brukeren fra å skrive inn ugyldige verdier og sette `input` til `:invalid` hvis verdien går utenfor `min` og `max`.
 Egenskapene kan brukes på `input` av følgende typer:
@@ -138,7 +236,19 @@ Inputfelt med dato mellom 1 januar 2020 og 1 april 2020: <input type="date" min=
 
 [Les mer om `max` i MDN we docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/max)
 
-### `type`
+## Brukeropplevelse
+
+https://medium.com/@andrew.burton/form-validation-best-practices-8e3bec7d0549
+
+For å skape en god brukeropplevelse ved input validering er det viktig å tenke på:
+
+### 1. Hvor en viser feilene
+
+### 2. Vise feilmeldingene på riktig tidspunkt
+
+### 3. Bruke fornuftige farger
+
+### 4. Bruk tydelig språk
 
 <label>
     Epost: <input type="email">
@@ -154,20 +264,6 @@ Inputfelt med dato mellom 1 januar 2020 og 1 april 2020: <input type="date" min=
     </label>
     <button>Lagre</button>
 </form>
-
-## Brukeropplevelse
-
-https://medium.com/@andrew.burton/form-validation-best-practices-8e3bec7d0549
-
-For å skape en god brukeropplevelse ved input validering er det viktig å tenke på:
-
-### 1. Hvor en viser feilene
-
-### 2. Vise feilmeldingene på riktig tidspunkt
-
-### 3. Bruke fornuftige farger
-
-### 4. Bruk tydelig språk
 
 ---
 

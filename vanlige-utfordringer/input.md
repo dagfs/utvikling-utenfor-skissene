@@ -30,6 +30,8 @@ textarea - som ikke er en input type men en egen tag
 <input type="url">
 <input type="week">
 
+inputmode lar deg fortelle nettleseren hva slags viretuelt keyboard som skal vises
+
 https://developer.mozilla.org/en-US/docs/Learn/Forms/HTML5_input_types
 
 <label>Navn: <input placeholder="Dag Frode"></label>
