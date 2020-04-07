@@ -29,7 +29,6 @@
         display: inline;
     }
 </style>
-<div>
 
 # Validering av input
 
@@ -180,5 +179,3 @@ For å skape en god brukeropplevelse ved input validering er det viktig å tenke
     <span></span>
 </label>
 https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement
-
-</div>
