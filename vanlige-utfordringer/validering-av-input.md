@@ -140,39 +140,100 @@ Typene `text`, `search`, `hidden`, `password`, `tel` kommer uten noen form for v
 <input type="password">
 </label>
 
-####
+#### De med mønstre
 
-<input type="url">
+<label>
+<span class="label">Email: </span>
 <input type="email">
+</label>
 
-<input type="time">
-<input type="week">
-<input type="date">
-<input type="datetime-local">
-<input type="month">
+<label>
+<span class="label">URL: </span>
+<input type="url">
+</label>
 
-<input type="number">
+#### De med velgere
 
-<input type="image">
-<input type="button">
-<input type="submit">
-<input type="reset">
-
-<input type="color">
+<label>
+<span class="label">Range: </span>
 <input type="range">
+</label>
+
+<label>
+<span class="label">Color: </span>
+<input type="color">
+</label>
+
+<label>
+<span class="label">File: </span>
 <input type="file">
+</label>
 
-<input type="radio">
-<input type="checkbox">
+#### De med mønstre og velgere
 
-<input type="url">
-<input type="email">
+<label>
+<span class="label">Number: </span>
+<input type="number">
+</label>
 
+<label>
+<span class="label">Time: </span>
 <input type="time">
+</label>
+
+<label>
+<span class="label">Week: </span>
 <input type="week">
+</label>
+
+<label>
+<span class="label">Date: </span>
 <input type="date">
+</label>
+
+<label>
+<span class="label">Datetime-local: </span>
 <input type="datetime-local">
+</label>
+
+<label>
+<span class="label">Month: </span>
 <input type="month">
+</label>
+
+#### De som i seg selv ikke kan være feil
+
+<label>
+<span class="label">Radio: </span>
+<input type="radio">
+</label>
+
+<label>
+<span class="label">Checkbox: </span>
+<input type="checkbox">
+</label>
+
+#### De som ikke har så mye å validere
+
+<label>
+<span class="label">Button: </span>
+<input type="button" value="Button">
+</label>
+
+<label>
+<span class="label">Submit: </span>
+<input type="submit">
+</label>
+
+<label>
+<span class="label">Reset: </span>
+<input type="reset">
+</label>
+
+<label>
+<span class="label">Image: </span>
+<input type="image">
+</label>
 
 [Les mer om `type` i MDN we docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#%3Cinput%3E_types)
 
