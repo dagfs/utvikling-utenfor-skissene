@@ -12,24 +12,33 @@
         outline: 1px solid red;
     }
 
-    input+.error {
+    .error,
+    .error-next-line {
         display: none;
     }
 
     input:invalid+.error {
+        margin-left: 10px;
         color: red;
         display: inline;
     }
 
-    input+.timed-error {
+    input:invalid+.error-next-line {
+        color: red;
+        display: block;
+        margin-top: 4px;
+        margin-left: 100px;
+    }
+
+    .timed-error {
         display: none;
     }
 
-    input.timed-error {
-        outline: none !important;
+    input[show-error="false"]:invalid {
+        outline: none;
     }
 
-    input.timed-error:invalid {
+    input[show-error="true"]:invalid {
         outline: 1px solid red;
     }
 
@@ -71,7 +80,9 @@ De innebygde egenskapene(attributt) som brukes for validering er:
 - `min` og `max` - verdier av nummer
 - `pattern`
 
-Ved å sette type og valideringsregler vil inputfeltet selv ofte kunne si ifra om det er gyldig eller ikke. Dette gjøres ved at pseudo-class (tenk `:hover`) `:invalid` blir satt både på `form` og `input` elementet det gjelder. Vi kan derfor enkelt style et inputfelt som ikke har gyldige verdier på denne måten:
+Ved å sette type og valideringsregler vil inputfeltet selv ofte kunne si ifra om det er gyldig eller ikke. Dette gjøres
+ved at pseudo-class (tenk `:hover`) `:invalid` blir satt både på `form` og `input` elementet det gjelder. Vi kan derfor
+enkelt style et inputfelt som ikke har gyldige verdier på denne måten:
 
 ```css
 input:invalid {
@@ -79,7 +90,9 @@ input:invalid {
 }
 ```
 
-Ved å bruke JavaScript kan vi få tak i et inputfelts `ValidityState` og på den måten finne ut hvilken feil et felt har hvis det har flere. Vi kan også bruke JavaScript metoden `input.setCustomValidity('Feilmelding')` for å sette en egen feilmelding.
+Ved å bruke JavaScript kan vi få tak i et inputfelts `ValidityState` og på den måten finne ut hvilken feil et felt har
+hvis det har flere. Vi kan også bruke JavaScript metoden `input.setCustomValidity('Feilmelding')` for å sette en egen
+feilmelding.
 
 ### Egenskapen `required`
 
@@ -98,7 +111,7 @@ mangler verdi blir satt til ugyldig.
     Påkrevd felt: <input required>
 </label>
 
-[Les mer om `required` i MDN we docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/required)
+[Les mer om `required` i MDN web docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/required)
 
 ### Egenskapen `type`
 
@@ -158,7 +171,8 @@ Typene `text`, `search`, `hidden`, `password`, `tel` kommer uten noen form for v
 
 #### De med mønstre
 
-Så kommer vi til de som kommer med et validerings pattern, `email` og `url`. Valdideringen for disse feltene er ofte nok for det vi trenger. Men det er greit å vite at feks `email` godtar `dag@example` som er en gyldig epost, men ofte ikke
+Så kommer vi til de som kommer med et validerings pattern, `email` og `url`. Valdideringen for disse feltene er ofte nok
+for det vi trenger. Men det er greit å vite at feks `email` godtar `dag@example` som er en gyldig epost, men ofte ikke
 det vi er ute etter.
 
 <label>
@@ -173,7 +187,8 @@ det vi er ute etter.
 
 #### De med velgere
 
-De typene vi har sett på til nå har vært fritekstfelter. `range`, `color` og `file` har derimot velgere som gjør at brukeren ikke kan velge en ugyldig verdi.
+De typene vi har sett på til nå har vært fritekstfelter. `range`, `color` og `file` har derimot velgere som gjør at
+brukeren ikke kan velge en ugyldig verdi.
 
 <label>
     <span class="label">Range: </span>
@@ -192,7 +207,8 @@ De typene vi har sett på til nå har vært fritekstfelter. `range`, `color` og 
 
 #### De med delvis fritekst og velgere
 
-I neste rekke kommer de feltene som lar brukeren skrive inn verdier selv, men som validerer de mens en skriver de inn. `number` tillater også enkelte mattematiske symboler slik som `e`.
+I neste rekke kommer de feltene som lar brukeren skrive inn verdier selv, men som validerer de mens en skriver de inn.
+`number` tillater også enkelte mattematiske symboler slik som `e`.
 
 <label>
     <span class="label">Number: </span>
@@ -226,7 +242,8 @@ I neste rekke kommer de feltene som lar brukeren skrive inn verdier selv, men so
 
 #### De som i seg selv ikke kan være feil i seg selv
 
-`radio` og `checkbox` kan også settes til å være required, men vil ikke kunne være feil i seg selv. Men kan altså bli feil om brukeren ikke velger et alternativ og prøver å submitte skjema.
+`radio` og `checkbox` kan også settes til å være required, men vil ikke kunne være feil i seg selv. Men kan altså bli
+feil om brukeren ikke velger et alternativ og prøver å submitte skjema.
 
 <label>
     <span class="label">Radio: </span>
@@ -262,11 +279,13 @@ De resterende input typene lar deg interagere med de, men tar ikke til seg verdi
     <input type="image">
 </label>
 
-[Les mer om `type` i MDN we docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#%3Cinput%3E_types)
+[Les mer om `type` i MDN web docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#%3Cinput%3E_types)
 
 ### Egenskapene `minLength` og `maxLength`
 
-Egenskapene `minLength` og `maxLength` sier hvor mange tegn et bruker skal få skrive inn i et `input` eller `textarea`. `maxLength` forhinder brukeren fra å skrive inn mer enn max antall tegn, mens `minLength` vil gjøre feltet ugyldig fra det første tegnet er skrevet inn, til `minLength` er nådd.
+Egenskapene `minLength` og `maxLength` sier hvor mange tegn et bruker skal få skrive inn i et `input` eller `textarea`.
+`maxLength` forhinder brukeren fra å skrive inn mer enn max antall tegn, mens `minLength` vil gjøre feltet ugyldig fra
+det første tegnet er skrevet inn, til `minLength` er nådd.
 
 #### Eksempel
 
@@ -278,13 +297,15 @@ Egenskapene `minLength` og `maxLength` sier hvor mange tegn et bruker skal få s
     Inputfelt for 3-5 tegn: <input minLength="3" maxLength="5">
 </label>
 
-[Les mer om `minLength` i MDN we docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/minlength)
+[Les mer om `minLength` i MDN web docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/minlength)
 
-[Les mer om `maxLength` i MDN we docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/maxLength)
+[Les mer om `maxLength` i MDN web docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/maxLength)
 
 ### Egenskapene `min` og `max`
 
-Egenskapene `min` og `max` sier noe om den minste og største godkjente verdien til et `input`. Nettleseren vil prøve å forhindre brukeren fra å skrive inn ugyldige verdier og sette `input` til `:invalid` hvis verdien går utenfor `min` og `max`.
+Egenskapene `min` og `max` sier noe om den minste og største godkjente verdien til et `input`. Nettleseren vil prøve å
+forhindre brukeren fra å skrive inn ugyldige verdier og sette `input` til `:invalid` hvis verdien går utenfor `min` og
+`max`.
 
 Egenskapene kan brukes på `input` av følgende typer:
 
@@ -321,9 +342,9 @@ Egenskapene kan brukes på `input` av følgende typer:
     Inputfelt med dato mellom 1 januar 2020 og 1 april 2020: <input type="date" min="2020-01-01" max="2020-04-01">
 </label>
 
-[Les mer om `min` i MDN we docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/min).
+[Les mer om `min` i MDN web docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/min).
 
-[Les mer om `max` i MDN we docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/max)
+[Les mer om `max` i MDN web docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/max)
 
 ### Egenskapen `pattern`
 
@@ -342,7 +363,7 @@ Den siste egenskapen vi kan sette for å få et inputfelt til å bli validert er
     Inputfelt som kun kan inneholde engelske bokstaver: <input pattern="[a-zA-Z]*" />
 </label>
 
-[Les mer om `pattern` i MDN we docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/pattern)
+[Les mer om `pattern` i MDN web docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/pattern)
 
 ### Metoden `setCustomValidity`
 
@@ -372,11 +393,13 @@ skjema. Vi pakker derfor inputfeltet i et form og legger til en knapp for å sen
 </script>
 ```
 
+<br>
 <form>
     <label>
         Input:
         <input onchange="validateRiktig(this)">
     </label>
+    <br>
     <button>Submit</button>
 </form>
 
@@ -395,36 +418,143 @@ docs](https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement/setCust
 
 ## Brukeropplevelse
 
-https://medium.com/@andrew.burton/form-validation-best-practices-8e3bec7d0549
+Vi har nå vært gjennom det vi trenger å vite om innebygged validering av input til å skape en god brukeropplevelse!
 
 For å skape en god brukeropplevelse ved input validering er det viktig å tenke på:
 
+1. Hvor en viser feilene
+2. Vise feilmeldingene på riktig tidspunkt
+3. Bruke fornuftige farger
+4. Bruk tydelig språk
+
 ### 1. Hvor en viser feilene
+
+Det er mange måter å vise feilmeldinger på. Jeg vil anbefale og vise feilmeldingen tett tilknyttet inputfeltet det
+gjelder, da enten til høyre eller under input feltet som er ugyldig. Hvis formet er langt bør en scrolle til der feilen
+er når brukeren prøver å sende inn data.
+
+#### Til høyre
+
+<form>
+    <label>
+        <span class="label">Navn: </span>
+        <input value="Dag Frode">
+    </label>
+    <br>
+    <label>
+        <span class="label">Epost: </span>
+        <input type="email" value="ikke en gyldig epost">
+        <span class="error">Venligst skriv inn en gyldig epost</span>
+    </label>
+    <br>
+    <label>
+        <span class="label">Adresse: </span>
+        <input value="Hakkebakkestien">
+    </label>
+</form>
+
+#### Under
+
+<form>
+    <label>
+        <span class="label">Navn: </span>
+        <input value="Dag Frode">
+    </label>
+    <br>
+    <label>
+        <span class="label">Epost: </span>
+        <input type="email" value="ikke en gyldig epost">
+        <span class="error-next-line">Venligst skriv inn en gyldig epost</span>
+    </label>
+    <br>
+    <label>
+        <span class="label">Adresse: </span>
+        <input value="Hakkebakkestien">
+    </label>
+    <br>
+    <button>Send inn</button>
+</form>
 
 ### 2. Vise feilmeldingene på riktig tidspunkt
 
+Det er slitsomt for brukeren å få feilmeldingen kastet i fleisen som i eksemplene over. Det er derfor lurt å vente til en bruker trykker ut av et felt med å vise feilmeldingene. Dette kan gjøres med litt enkel JavaScript og CSS. Hvis det er snakk om et komplisert felt som skal valideres kan en kjøre validering noen ms etter at brukeren har sluttet å skrive.
+
+```html
+<input
+  type="email"
+  class="timed-error"
+  oninput="this.setAttribute('show-error', false)"
+  onblur="this.setAttribute('show-error', true)"
+/>
+```
+
+```css
+.timed-error {
+  display: none;
+  color: red;
+}
+
+input[show-error="true"]:invalid {
+  outline: 1px solid red;
+}
+
+input[show-error="true"]:invalid + .timed-error {
+  display: inline;
+}
+```
+
+<form>
+    <label>
+        <span class="label">Navn: </span>
+        <input value="Dag Frode">
+    </label>
+    <br>
+    <label>
+        <span class="label">Epost: </span>
+        <input type="email" oninput="this.setAttribute('show-error', false)"
+            onblur="this.setAttribute('show-error', true)" />
+        <span class="timed-error">Venligst skriv inn en gyldig epost</span>
+    </label>
+    <br>
+    <label>
+        <span class="label">Adresse: </span>
+        <input value="Hakkebakkestien">
+    </label>
+    <br>
+    <button>Send inn</button>
+</form>
+
 ### 3. Bruke fornuftige farger
+
+Her vil jeg presisere at det er fornuftig å benytte en farge en forbinder med feil, feks rød med feilmeldingen og en annen farge for når ting går bra, feks grønn. Det er lurt å få feilmeldingene til å skille seg ut ved feks å gjøre teksten rød slik at brukeren får med seg at det er en feil. Det kan gjerne brukes en `*` eller en `x` også for å markere at dette er ekstra informasjon til inputfeltet slik at de 5-7% av oss som sliter med farger også får det med seg. Og tilsvarende for når ting går bra.
+
+<form>
+    <label>
+        <span class="label">Navn: </span>
+        <input value="Dag Frode">
+    </label>
+    <br>
+    <label>
+        <span class="label">Epost: </span>
+        <input type="email" show-error="true" oninput="this.setAttribute('show-error', false)"
+            onblur="this.setAttribute('show-error', true)" value="ikke en epostaddresse" />
+        <span class="timed-error">*Venligst skriv inn en gyldig epost</span>
+    </label>
+    <br>
+    <label>
+        <span class="label">Adresse: </span>
+        <input value="Hakkebakkestien">
+    </label>
+    <br>
+    <button>Send inn</button>
+</form>
 
 ### 4. Bruk tydelig språk
 
-<label>
-    Epost: <input type="email">
-    <span class="error">Venligst skriv inn en gyldig epost</span>
-</label>
-<br>
-<br>
-<form>
-    <label>
-        Epost: <input class="timed-error" type="email" required showError="false"
-            oninput="this.setAttribute('show-error', false)" onblur="this.setAttribute('show-error', true)">
-        <span class="timed-error">Vennligst skriv inn en gyldig epostadresse</span>
-    </label>
-    <button>Lagre</button>
-</form>
+- positivt språk
+- detaljer hvorfor valideringen feilet. hva er feil i eposten hvis du kan det, eller gi en lovelig verdi. eller hvis du har flere former for validering på det samme feltet. epost og ikke i bruk feks.
 
----
-
-## setCustomValidity
+## Løsningsforslag
 
 <form>
     <label onchange="customValidation(this)">
@@ -450,4 +580,5 @@ For å skape en god brukeropplevelse ved input validering er det viktig å tenke
     }
 </script>
 
-https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement
+kilde:
+https://medium.com/@andrew.burton/form-validation-best-practices-8e3bec7d0549
