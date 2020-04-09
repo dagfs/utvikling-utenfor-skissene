@@ -42,3 +42,8 @@ Når vi er inneom inputs, hva skjedded med fieldset? Gitt de bare av moten? Elle
 <legend>Lag ny bruker</legend>
 <label>Navn: <input placeholder="Dag Frode"></label>
 </fieldset>
+
+
+https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/multiple
+
+spellcheck
