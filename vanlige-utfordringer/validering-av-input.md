@@ -255,6 +255,8 @@ feil om brukeren ikke velger et alternativ og prøver å submitte skjema.
     <input type="checkbox">
 </label>
 
+`radio` og `checkbox` bør grupperes med et `fieldset` da dette forbedrer UU ved at skjermleserne forstår konteksten bedre. Andre felter som hører sammen kan med fordel også grupperes.
+
 #### De som ikke har så mye å validere
 
 De resterende input typene lar deg interagere med de, men tar ikke til seg verdier.
@@ -368,8 +370,9 @@ Den siste egenskapen vi kan sette for å få et inputfelt til å bli validert er
 ### Metoden `setCustomValidity`
 
 Vi kan også bruke metoden `setCustomValidity` får å gjøre et input felt ugyldig på samme måte som blir gjort hvis input
-feltene feiler av en av de innebygde attributtene. Men feilmeldingen her dukker ikke opp før en prøver å sende inn
-skjema. Vi pakker derfor inputfeltet i et form og legger til en knapp for å send einn dataene.
+feltene feiler av en av de innebygde attributtene. Men feilmeldingen her dukker ikke opp før en prøver å sende inn  skjema. Vi pakker derfor inputfeltet i et form og legger til en knapp for å sende inn dataene. 
+
+`setCustomValidity` vil også la nettleseren scrolle til feltet som er ugyldig.
 
 #### Eksempel setCustomValidity
 
@@ -429,9 +432,7 @@ For å skape en god brukeropplevelse ved input validering er det viktig å tenke
 
 ### 1. Hvor en viser feilene
 
-Det er mange måter å vise feilmeldinger på. Jeg vil anbefale og vise feilmeldingen tett tilknyttet inputfeltet det
-gjelder, da enten til høyre eller under input feltet som er ugyldig. Hvis formet er langt bør en scrolle til der feilen
-er når brukeren prøver å sende inn data.
+Det er mange måter å vise feilmeldinger på. Jeg vil anbefale og vise feilmeldingen tett tilknyttet inputfeltet det gjelder, da enten til høyre eller under input feltet som er ugyldig. Hvis formet er langt bør en scrolle til der feilen er når brukeren prøver å sende inn data.
 
 #### Til høyre
 
@@ -477,7 +478,9 @@ er når brukeren prøver å sende inn data.
 
 ### 2. Vise feilmeldingene på riktig tidspunkt
 
-Det er slitsomt for brukeren å få feilmeldingen kastet i fleisen som i eksemplene over. Det er derfor lurt å vente til en bruker trykker ut av et felt med å vise feilmeldingene. Dette kan gjøres med litt enkel JavaScript og CSS. Hvis det er snakk om et komplisert felt som skal valideres kan en kjøre validering noen ms etter at brukeren har sluttet å skrive.
+Det er slitsomt for brukeren å få feilmeldingen kastet i fleisen som i eksemplene over. Det er derfor lurt å vente til en bruker trykker ut av et felt med å vise feilmeldingene. Dette kan gjøres med litt enkel JavaScript og CSS. 
+
+Hvis det er snakk om et komplisert felt som skal valideres kan en kjøre validering noen ms etter at brukeren har sluttet å skrive.
 
 ```html
 <input
@@ -551,28 +554,95 @@ Her vil jeg presisere at det er fornuftig å benytte en farge en forbinder med f
 
 ### 4. Bruk tydelig språk
 
-- positivt språk
-- detaljer hvorfor valideringen feilet. hva er feil i eposten hvis du kan det, eller gi en lovelig verdi. eller hvis du har flere former for validering på det samme feltet. epost og ikke i bruk feks.
+Det siste det er viktig å tenke på for å skapeen god brukeropplevelse er å gi en god tilbakemelding når noe er feil. Bruk positivt språk som oppmuntrer brukeren. Prøv å gjøre feilmeldingene beskrivende slik at det er lett å forstå hva som gikk feil
+
 
 ## Løsningsforslag
 
+Vi bruker samme stylingen som tidligere
+
+```css
+.timed-error {
+  display: none;
+  color: red;
+}
+
+input[show-error="true"]:invalid {
+  outline: 1px solid red;
+}
+
+input[show-error="true"]:invalid + .timed-error {
+  display: inline;
+}
+```
+
+Vi lager en funksjon for å validere et av inputfeltene våre. Vi targeter labelen da den får beskjed når inputfeltet den er knyttet til oppdaterer seg, altså når `input` har et event av type `blur`. Ved å targete labelen får vi også tak i feilmeldingsfeltet slik at vi får oppdatert både inputfeltet og error feltetsamtidig.
+
+```js
+function validateUsername(label) {
+    var input = label.querySelector("input");
+    var errorSpan = label.querySelector("span.timed-error");
+    error = "";
+    if (!/\d/.test(input.value) ) {
+        error = `*${input.value} er alt brukt. Hva med ${input.value}1?`
+    }
+
+    input.setCustomValidity(error);
+    errorSpan.innerText = error;
+}
+```
+
+Vi har pakket feltene i et `fieldset` for å gruppere de.
+
+```html
 <form>
-    <label onchange="customValidation(this)">
-        <span class="label">Input: </span>
-        <input class="timed-error" show-error="false" oninput="this.setAttribute('show-error', false)"
-            onblur="this.setAttribute('show-error', true)">
-        <span class="timed-error">derp</span>
-    </label>
-    <button>Submit</button>
+    <fieldset>
+        <legend>Personalia:</legend>
+        <label onchange="validateUsername(this)">
+            <span class="label">Brukernavn: </span>
+            <input show-error="false" oninput="this.setAttribute('show-error', false)"
+                onblur="this.setAttribute('show-error', true)">
+            <span class="timed-error">derp</span>
+        </label>
+        <label>
+            <span class="label">Email: </span>
+            <input type="email" show-error="false" oninput="this.setAttribute('show-error', false)"
+                onblur="this.setAttribute('show-error', true)">
+            <span class="timed-error">*Vennligst skriv inn en gyldig epost</span>
+        </label>
+        <button>Submit</button>
+    </fieldset>
+</form>
+```
+
+
+
+<form>
+    <fieldset>
+        <legend>Personalia:</legend>
+        <label onchange="validateUsername(this)">
+            <span class="label">Brukernavn: </span>
+            <input show-error="false" oninput="this.setAttribute('show-error', false)"
+                onblur="this.setAttribute('show-error', true)">
+            <span class="timed-error">derp</span>
+        </label>
+        <label>
+            <span class="label">Email: </span>
+            <input type="email" show-error="false" oninput="this.setAttribute('show-error', false)"
+                onblur="this.setAttribute('show-error', true)">
+            <span class="timed-error">*Vennligst skriv inn en gyldig epost</span>
+        </label>
+        <button>Submit</button>
+    </fieldset>
 </form>
 
 <script>
-    function customValidation(label) {
+    function validateUsername(label) {
         var input = label.querySelector("input");
         var errorSpan = label.querySelector("span.timed-error");
         error = "";
-        if (input.value != "Riktig") {
-            error = 'Input teksten er ikke "riktig"'
+        if (!/\d/.test(input.value) ) {
+            error = `*${input.value} er alt brukt. Hva med ${input.value}1?`
         }
 
         input.setCustomValidity(error);
