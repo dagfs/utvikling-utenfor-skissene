@@ -650,5 +650,8 @@ Vi har pakket feltene i et `fieldset` for å gruppere de.
     }
 </script>
 
-kilde:
-https://medium.com/@andrew.burton/form-validation-best-practices-8e3bec7d0549
+<!-- TODO: kilde:
+https://medium.com/@andrew.burton/form-validation-best-practices-8e3bec7d0549 -->
+<!-- TODO: stavekontroll -->
+
+<!-- TODO: https://design.nav.no/patterns/form-validation -->
